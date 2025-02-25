@@ -18,6 +18,7 @@ stars: any;
             'assets/dude.png',
             { frameWidth: 32, frameHeight: 48 }
         );
+        this.load.image('hexagon', 'assets/hexagon.png')
 
     }
 
