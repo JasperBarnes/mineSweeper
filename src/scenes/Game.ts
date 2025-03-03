@@ -4,102 +4,122 @@ export class Game extends Scene {
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
     cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-stars: any;
+    stars: any;
     constructor() {
         super('Game');
     }
 
     preload() {
-        this.load.image('sky', 'assets/sky.png');
-        this.load.image('ground', 'assets/platform.png');
-        this.load.image('star', 'assets/star.png');
+        //         this.load.image('sky', 'assets/sky.png');
+        //         this.load.image('ground', 'assets/platform.png');
+        //         this.load.image('star', 'assets/star.png');
         this.load.image('bomb', 'assets/bomb.png');
-        this.load.spritesheet('dude',
-            'assets/dude.png',
-            { frameWidth: 32, frameHeight: 48 }
-        );
+        //         this.load.spritesheet('dude',
+        //             'assets/dude.png',
+        //             { frameWidth: 32, frameHeight: 48 }
+        //         );
         this.load.image('hexagon', 'assets/hexagon.png')
-
+        this.load.setBaseURL('https://cdn.phaserfiles.com/v385');
+        this.load.image('tiles', 'assets/tilemaps/iso/tilesets/tileset.png');
     }
 
+
     create() {
-        this.cursors = this.input.keyboard!.createCursorKeys();
+        //         this.cursors = this.input.keyboard!.createCursorKeys();
 
         this.add.image(400, 300, 'sky');
 
-        this.platforms = this.physics.add.staticGroup();
+        const level = [
+            [0, 0, 1],
+            [1, 0, 0]
+        ]
 
-        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+        const map = this.make.tilemap({ data: level, tileWidth: 16, tileHeight: 16});
 
-        this.platforms.create(600, 400, 'ground');
-        this.platforms.create(50, 250, 'ground');
-        this.platforms.create(750, 220, 'ground');
+        const tileset = map.addTilesetImage('tileset', 'tiles');
 
-        
+        const layer =  map.createBlankLayer('layer1', tileset!);
+        layer.
 
-        this.player = this.physics.add.sprite(100, 450, 'dude').setScale(0.05).refreshBody();
+        //         this.platforms = this.physics.add.staticGroup();
 
-        this.player.setBounce(0.2);
-        // this.player.setCollideWorldBounds(true);
+        //         this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
 
-        this.physics.add.collider(this.player, this.platforms);
-        this.stars = this.physics.add.group({
-            key: 'star',
-            repeat: 11,
-            setXY: {
-            X: 12,
-            Y:0,
-            stepX:70,
-        }
-    });
+        //         this.platforms.create(600, 400, 'ground');
+        //         this.platforms.create(50, 250, 'ground');
+        //         this.platforms.create(750, 220, 'ground');
 
-    this.physics.add.collider(this.stars.getChildren(),this.platforms)
-    this.physics.add.collider(this.stars.getChildren(),this.player)
-    this.stars.children.iterate(function (star: Phaser.GameObjects.GameObject) {
 
-      star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-      return null;
-    
-    });
 
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
+        //         this.player = this.physics.add.sprite(100, 450, 'dude').setScale(0.05).refreshBody();
 
-        this.anims.create({
-            key: 'turn',
-            frames: [{ key: 'dude', frame: 4 }],
-            frameRate: 20
-        });
+        //         this.player.setBounce(0.2);
+        //         this.player.setCollideWorldBounds(true);
 
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-            frameRate: 10,
-            repeat: -1
-        });
+        //         this.physics.add.collider(this.player, this.platforms);
+        //         this.stars = this.physics.add.group({
+        //             key: 'star',
+        //             repeat: 11,
+        //             setXY: {
+        //             X: 12,
+        //             Y:0,
+        //             stepX:70,
+        //         }
+        //     });
+
+        //     this.physics.add.collider(this.stars.getChildren(),this.platforms)
+        //     this.physics.add.collider(this.stars.getChildren(),this.player)
+        //     this.stars.children.iterate(function (star: Phaser.GameObjects.GameObject) {
+
+        //       star.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+        //       return null;
+
+        //     });
+
+        //         this.anims.create({
+        //             key: 'left',
+        //             frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+        //             frameRate: 10,
+        //             repeat: -1
+        //         });
+
+        //         this.anims.create({
+        //             key: 'turn',
+        //             frames: [{ key: 'dude', frame: 4 }],
+        //             frameRate: 20
+        //         });
+
+        //         this.anims.create({
+        //             key: 'right',
+        //             frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+        //             frameRate: 10,
+        //             repeat: -1
+        //         });
 
     }
 
     update() {
-        if (this.cursors.left.isDown) {
-            this.player.setVelocityX(-160);
-            this.player.anims.play('left', true);
-        }
-        else if (this.cursors.right.isDown) {
-            this.player.setVelocityX(160);
-            this.player.anims.play('right', true);
-        }
-        else {
-            this.player.setVelocityX(0);
-            this.player.anims.play('turn');
-        }
+        //         if (this.cursors.left.isDown) {
+        //             this.player.setVelocityX(-160);
+        //             this.player.anims.play('left', true);
+        //         }
+        //         else if (this.cursors.right.isDown) {
+        //             this.player.setVelocityX(160);
+        //             this.player.anims.play('right', true);
+        //         }
+        //         else {
+        //             this.player.setVelocityX(0);
+        //             this.player.anims.play('turn');
+        //         }
 
-        if (this.cursors.up.isDown && this.player.body.touching.down) {
-            this.player.setVelocityY(-330);
-        }
+        //         if (this.cursors.up.isDown && this.player.body.touching.down) {
+        //             this.player.setVelocityY(-330);
+        //         }
     }
 }
+
+
+// create a grid and place bobms and numbers on places 
+// after use the grass to cover the grid and numbers 
+// have on click move or delete grass
+//if a bomb is clicked then game over
