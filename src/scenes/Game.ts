@@ -19,8 +19,8 @@ export class Game extends Scene {
         //             { frameWidth: 32, frameHeight: 48 }
         //         );
         this.load.image('hexagon', 'assets/hexagon.png')
-        this.load.setBaseURL('https://cdn.phaserfiles.com/v385');
-        this.load.image('tiles', 'assets/tilemaps/iso/tilesets/tileset.png');
+        this.load.image('tiles', 'assets/tileset.png');
+        this.load.tilemapTiledJSON('map', 'assets/hex.json');
     }
 
 
@@ -29,17 +29,16 @@ export class Game extends Scene {
 
         this.add.image(400, 300, 'sky');
 
-        const level = [
-            [0, 0, 1],
-            [1, 0, 0]
-        ]
+        var map = this.add.tilemap('map');
 
-        const map = this.make.tilemap({ data: level, tileWidth: 16, tileHeight: 16});
+        var tileset = map.addTilesetImage('tileset', 'tiles');
+    
+        // map.createLayer('Calque 1', tileset!);
+        
+        const layer1 =  map.createBlankLayer('layer1', tileset!);
+        layer1!.randomize(0, 0, map.width, map.height, [ 1,1,1,1,1,1, 2 ]);
 
-        const tileset = map.addTilesetImage('tileset', 'tiles');
-
-        const layer =  map.createBlankLayer('layer1', tileset!);
-        layer.
+        // layer
 
         //         this.platforms = this.physics.add.staticGroup();
 
