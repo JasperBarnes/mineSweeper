@@ -10,14 +10,14 @@ export class Game extends Scene {
     }
 
     preload() {
-        //         this.load.image('sky', 'assets/sky.png');
-        //         this.load.image('ground', 'assets/platform.png');
-        //         this.load.image('star', 'assets/star.png');
+                this.load.image('sky', 'assets/sky.png');
+                this.load.image('ground', 'assets/platform.png');
+                this.load.image('star', 'assets/star.png');
         this.load.image('bomb', 'assets/bomb.png');
-        //         this.load.spritesheet('dude',
-        //             'assets/dude.png',
-        //             { frameWidth: 32, frameHeight: 48 }
-        //         );
+                this.load.spritesheet('dude',
+                    'assets/dude.png',
+                    { frameWidth: 32, frameHeight: 48 }
+                );
         this.load.image('hexagon', 'assets/hexagon.png')
         this.load.image('tiles', 'assets/tileset.png');
         this.load.tilemapTiledJSON('map', 'assets/hex.json');
@@ -27,7 +27,7 @@ export class Game extends Scene {
     create() {
         //         this.cursors = this.input.keyboard!.createCursorKeys();
 
-        this.add.image(400, 300, 'sky');
+        this.add.image(400, 300, 'ground').setScale(3,20);
 
         var map = this.add.tilemap('map');
 
@@ -36,7 +36,9 @@ export class Game extends Scene {
         // map.createLayer('Calque 1', tileset!);
         
         const layer1 =  map.createBlankLayer('layer1', tileset!);
-        layer1!.randomize(0, 0, map.width, map.height, [ 1,1,1,1,1,1, 2 ]);
+        layer1!.randomize(0, 0, map.width, map.height, [ 1,1,1,1,1,1, 6 ]).setScale(1.7,2.5);
+        const layer2 =  map.createBlankLayer('layer2  ', tileset!);
+        layer2!.randomize(0, 0, map.width, map.height, [ 1 ]).setScale(1.7,2.5);
 
         // layer
 
