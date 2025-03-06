@@ -36,9 +36,17 @@ export class Game extends Scene {
         // map.createLayer('Calque 1', tileset!);
         
         const layer1 =  map.createBlankLayer('layer1', tileset!);
-        layer1!.randomize(0, 0, map.width, map.height, [ 1,1,1,1,1,1, 6 ]).setScale(1.7,2.5);
-        const layer2 =  map.createBlankLayer('layer2  ', tileset!);
-        layer2!.randomize(0, 0, map.width, map.height, [ 1 ]).setScale(1.7,2.5);
+        layer1!.randomize(0, 0, map.width, map.height, [ 1,1,1,1,1, 6 ]).setScale(1.7,2.5);
+        const layer2 =  map.createBlankLayer('layer2', tileset!);
+        layer2!.randomize(0, 0, map.width, map.height, [ 2 ]). setScale(1.7,2.5);
+
+        this.input.on('pointerup', function (pointer) {
+            var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
+            // map.removeTileAtWorldXY
+            map.removeTile(tile)
+            console.log(pointer.worldX, pointer.worldY, tile);
+        } 
+          , this);
 
         // layer
 
