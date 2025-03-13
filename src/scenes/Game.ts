@@ -1,5 +1,13 @@
 import { Scene } from 'phaser';
 
+const BOMB = 6;
+const ONE  = 7;
+const TWO = 2;
+const  Blank= 1;
+const THREE = 3;
+const  Four= 4;
+const  Five= 5;
+const Six=9
 export class Game extends Scene {
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
@@ -36,7 +44,18 @@ export class Game extends Scene {
         // map.createLayer('Calque 1', tileset!);
 
         const layer1 = map.createBlankLayer('layer1', tileset!);
-        layer1!.randomize(0, 0, map.width, map.height, [1, 1, 1, 1, 1, 6]).setScale(1.7, 2.5);
+        layer1!.randomize(0, 0, map.width, map.height, [1, 1, 1, 1, 1, BOMB]).setScale(1.7, 2.5);
+        for (let x = 0; x < map.width; x++){
+            for (let y = 0 ; x < map.height; x++){
+                let tile = layer1?.getTileAt(x,y);
+                if (!tile) continue;
+                // if(neighborDeltas(tile.index == BOMB)){
+                    // tile.index == BOMB}
+                //  if the tile is a bomb (), continue
+                //  else, add up it's neighbors who are bombs
+            }
+        }
+        layer1?.putTileAt
         const layer2 = map.createBlankLayer('layer2', tileset!);
         layer2!.randomize(0, 0, map.width, map.height, [2]).setScale(1.7, 2.5);
 
@@ -57,6 +76,7 @@ export class Game extends Scene {
                 let neighborX = tile.x + dx;
                 let neighborY = tile.y + dy;
                 map.removeTileAt(neighborX, neighborY)
+                
              }
             
         }
