@@ -40,15 +40,29 @@ export class Game extends Scene {
         const layer2 = map.createBlankLayer('layer2', tileset!);
         layer2!.randomize(0, 0, map.width, map.height, [2]).setScale(1.7, 2.5);
 
-        this.input.on('pointerup', function (pointer) {
+        this.input.on('pointerup', function (pointer: any) {
             var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
+            if (!tile) return;
             // map.removeTileAtWorldXY
             map.removeTile(tile)
             console.log(pointer.worldX, pointer.worldY, tile);
+            let neighborDeltas;
+            if (tile.y % 2 == 0){
+                neighborDeltas = [[-1,0], [-1,-1], [0,-1], [1,0], [0,1], [-1,1]];
+            }
+            else{
+                neighborDeltas = [[-1,0], [0,-1], [1,-1], [1,0], [1,1], [0,1]];
+            }
+            for (let [dx,dy] of neighborDeltas){
+                let neighborX = tile.x + dx;
+                let neighborY = tile.y + dy;
+                map.removeTileAt(neighborX, neighborY)
+             }
+            
         }
             , this);
         // for(x-range;x+range;x++); for(y-range;y+range;y++);
-        // if( (x-1,y), (x-1,y-1), (x,y-1), (x+1,y), (x,y+1),(x-1,y+1) === [6])
+         
         // layer
 
         //         this.platforms = this.physics.add.staticGroup();
