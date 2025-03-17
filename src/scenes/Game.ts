@@ -1,13 +1,13 @@
 import { Scene } from 'phaser';
 
 const BOMB = 6;
-const ONE  = 7;
+const ONE = 7;
 const TWO = 2;
-const  Blank= 1;
+const BLANK = 1;
 const THREE = 3;
-const  Four= 4;
-const  Five= 5;
-const Six=9
+const FOUR = 4;
+const FIVE = 5;
+const SIX = 9
 export class Game extends Scene {
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
@@ -45,44 +45,99 @@ export class Game extends Scene {
 
         const layer1 = map.createBlankLayer('layer1', tileset!);
         layer1!.randomize(0, 0, map.width, map.height, [1, 1, 1, 1, 1, BOMB]).setScale(1.7, 2.5);
-        for (let x = 0; x < map.width; x++){
-            for (let y = 0 ; x < map.height; x++){
-                let tile = layer1?.getTileAt(x,y);
+        for (let x = 0; x < map.width; x++) {
+            for (let y = 0; x < map.height; x++) {
+                let tile = layer1?.getTileAt(x, y);
                 if (!tile) continue;
-                // if(neighborDeltas(tile.index == BOMB)){
-                    // tile.index == BOMB}
+                // If the tile is a bomb, continue
+                // If not, count up the number of neighbors who are bombs
+                // and set the tile to that tile (layer1.setTileAt())
+                if (tile.index === BOMB) continue;
+                //defeat
+
+                else {
+                    let bombCount = 0;
+                    let neighborDeltas;
+                    if (tile.y % 2 == 0) {
+                        neighborDeltas = [[-1, 0], [-1, -1], [0, -1], [1, 0], [0, 1], [-1, 1]];
+                    }
+                    else {
+                        neighborDeltas = [[-1, 0], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1]];
+                    }
+                    for (let [dx, dy] of neighborDeltas) {
+                        let neighborX = tile.x + dx;
+                        let neighborY = tile.y + dy;
+                        let neighbor = map.getTileAt(neighborX, neighborY);
+                        if (neighbor?.index == BOMB) {
+                            bombCount = bombCount + 1;
+                        }
+                    }
+                    switch (bombCount) {
+                        case 1:
+                            layer1!.putTileAt(ONE, tile.x, tile.y);
+                            break;
+                        case 2:
+                            layer1!.putTileAt(TWO, tile.x, tile.y);
+                            break;
+                        case 3:
+                            layer1!.putTileAt(THREE, tile.x, tile.y);
+                            break;
+                        case 4:
+                            layer1!.putTileAt(FOUR, tile.x, tile.y);
+                            break;
+                        case 5:
+                            layer1!.putTileAt(FIVE, tile.x, tile.y);
+                            break;
+                        case 6:
+                            layer1!.putTileAt(SIX, tile.x, tile.y);
+                            break;
+                    }
+                    //         var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
+                    //         let neighborDeltas;
+                    // if (tile.y % 2 == 0) {
+                    //     neighborDeltas = [[-1, 0], [-1, -1], [0, -1], [1, 0], [0, 1], [-1, 1]];
+                    // }
+                    // else {
+                    //     neighborDeltas = [[-1, 0], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1]];
+                    // }
+                    // for (let [dx, dy] of neighborDeltas) {
+                    //     let neighborX = tile.x + dx;
+                    //     let neighborY = tile.y + dy;
+
+                }
+                // if(tile.index == BOMB)){
+                // tile.index == BOMB}
                 //  if the tile is a bomb (), continue
                 //  else, add up it's neighbors who are bombs
             }
         }
-        layer1?.putTileAt
         const layer2 = map.createBlankLayer('layer2', tileset!);
-        layer2!.randomize(0, 0, map.width, map.height, [2]).setScale(1.7, 2.5);
+        // layer2!.randomize(0, 0, map.width, map.height, [2]).setScale(1.7, 2.5);
 
-        this.input.on('pointerup', function (pointer: any) {
-            var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
-            if (!tile) return;
-            // map.removeTileAtWorldXY
-            map.removeTile(tile)
-            console.log(pointer.worldX, pointer.worldY, tile);
-            let neighborDeltas;
-            if (tile.y % 2 == 0){
-                neighborDeltas = [[-1,0], [-1,-1], [0,-1], [1,0], [0,1], [-1,1]];
-            }
-            else{
-                neighborDeltas = [[-1,0], [0,-1], [1,-1], [1,0], [1,1], [0,1]];
-            }
-            for (let [dx,dy] of neighborDeltas){
-                let neighborX = tile.x + dx;
-                let neighborY = tile.y + dy;
-                map.removeTileAt(neighborX, neighborY)
-                
-             }
-            
-        }
-            , this);
+        // this.input.on('pointerup', function (pointer: any) {
+        //     var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
+        //     if (!tile) return;
+        //     // map.removeTileAtWorldXY
+        //     map.removeTile(tile)
+        //     console.log(pointer.worldX, pointer.worldY, tile);
+        //     let neighborDeltas;
+        //     if (tile.y % 2 == 0) {
+        //         neighborDeltas = [[-1, 0], [-1, -1], [0, -1], [1, 0], [0, 1], [-1, 1]];
+        //     }
+        //     else {
+        //         neighborDeltas = [[-1, 0], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1]];
+        //     }
+        //     for (let [dx, dy] of neighborDeltas) {
+        //         let neighborX = tile.x + dx;
+        //         let neighborY = tile.y + dy;
+        //         map.removeTileAt(neighborX, neighborY)
+
+        //     }
+
+        // }
+        //     , this);
         // for(x-range;x+range;x++); for(y-range;y+range;y++);
-         
+
         // layer
 
         //         this.platforms = this.physics.add.staticGroup();
