@@ -3,7 +3,7 @@ import { Scene } from 'phaser';
 const BOMB = 6;
 const ONE = 7;
 const TWO = 2;
-const BLANK = 1;
+// const BLANK = 1;
 const THREE = 3;
 const FOUR = 4;
 const FIVE = 5;
@@ -46,8 +46,8 @@ export class Game extends Scene {
         const layer1 = map.createBlankLayer('layer1', tileset!);
         layer1!.randomize(0, 0, map.width, map.height, [1, 1, 1, 1, 1, BOMB]).setScale(1.7, 2.5);
         for (let x = 0; x < map.width; x++) {
-            for (let y = 0; x < map.height; x++) {
-                let tile = layer1?.getTileAt(x, y);
+            for (let y = 0; y < map.height; y++) {
+                let tile = layer1?.getTileAt(x,y);
                 if (!tile) continue;
                 // If the tile is a bomb, continue
                 // If not, count up the number of neighbors who are bombs
@@ -111,31 +111,17 @@ export class Game extends Scene {
                 //  else, add up it's neighbors who are bombs
             }
         }
-        const layer2 = map.createBlankLayer('layer2', tileset!);
-        // layer2!.randomize(0, 0, map.width, map.height, [2]).setScale(1.7, 2.5);
+        const layer2 = map.createBlankLayer('layer1', tileset!);
+        layer2!.randomize(0, 0, map.width, map.height, [2]).setScale(1.7, 2.5);
 
-        // this.input.on('pointerup', function (pointer: any) {
-        //     var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
-        //     if (!tile) return;
-        //     // map.removeTileAtWorldXY
-        //     map.removeTile(tile)
-        //     console.log(pointer.worldX, pointer.worldY, tile);
-        //     let neighborDeltas;
-        //     if (tile.y % 2 == 0) {
-        //         neighborDeltas = [[-1, 0], [-1, -1], [0, -1], [1, 0], [0, 1], [-1, 1]];
-        //     }
-        //     else {
-        //         neighborDeltas = [[-1, 0], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1]];
-        //     }
-        //     for (let [dx, dy] of neighborDeltas) {
-        //         let neighborX = tile.x + dx;
-        //         let neighborY = tile.y + dy;
-        //         map.removeTileAt(neighborX, neighborY)
+        this.input.on('pointerup', function (pointer: any) {
+            var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
+            if (!tile) return;
+            map.removeTile(tile)
+            console.log(pointer.worldX, pointer.worldY, tile);
 
-        //     }
-
-        // }
-        //     , this);
+        }
+            , this);
         // for(x-range;x+range;x++); for(y-range;y+range;y++);
 
         // layer
