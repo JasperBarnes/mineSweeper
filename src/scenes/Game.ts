@@ -47,6 +47,7 @@ export class Game extends Scene {
         layer1!.randomize(0, 0, map.width, map.height, [1, 1, 1, 1, 1, BOMB]).setScale(1.7, 2.5);
         for (let x = 0; x < map.width; x++) {
             for (let y = 0; y < map.height; y++) {
+                
                 let tile = layer1?.getTileAt(x,y);
                 if (!tile) continue;
                 // If the tile is a bomb, continue
@@ -111,14 +112,20 @@ export class Game extends Scene {
                 //  else, add up it's neighbors who are bombs
             }
         }
-        const layer2 = map.createBlankLayer('layer1', tileset!);
-        layer2!.randomize(0, 0, map.width, map.height, [2]).setScale(1.7, 2.5);
+        const layer2 = map.createBlankLayer('layer2', tileset!);
+        layer2!.randomize(0, 0, map.width, map.height, [8]).setScale(1.7, 2.5);
 
-        this.input.on('pointerup', function (pointer: any) {
+        this.input.on('pointerup', (pointer: any) => {
             var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
             if (!tile) return;
+            var layer1Tile = layer1!.getTileAtWorldXY(pointer.worldX, pointer.worldY)
             map.removeTile(tile)
             console.log(pointer.worldX, pointer.worldY, tile);
+            if (layer1Tile.index === BOMB){
+                //defeat
+                this.scene.start("GameOver")
+
+            }
 
         }
             , this);
