@@ -3,11 +3,11 @@ import { Scene } from 'phaser';
 const BOMB = 6;
 const ONE = 7;
 const TWO = 2;
-// const BLANK = 1;
+const BLANK = 8;
 const THREE = 3;
 const FOUR = 4;
 const FIVE = 5;
-const SIX = 9
+const FLAG = 9
 export class Game extends Scene {
     platforms: Phaser.Physics.Arcade.StaticGroup;
     player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
@@ -47,14 +47,14 @@ export class Game extends Scene {
         layer1!.randomize(0, 0, map.width, map.height, [1, 1, 1, 1, 1, BOMB]).setScale(1.7, 2.5);
         for (let x = 0; x < map.width; x++) {
             for (let y = 0; y < map.height; y++) {
-                
-                let tile = layer1?.getTileAt(x,y);
+
+                let tile = layer1?.getTileAt(x, y);
                 if (!tile) continue;
                 // If the tile is a bomb, continue
                 // If not, count up the number of neighbors who are bombs
                 // and set the tile to that tile (layer1.setTileAt())
                 if (tile.index === BOMB) continue;
-                //defeat
+
 
                 else {
                     let bombCount = 0;
@@ -89,9 +89,6 @@ export class Game extends Scene {
                         case 5:
                             layer1!.putTileAt(FIVE, tile.x, tile.y);
                             break;
-                        case 6:
-                            layer1!.putTileAt(SIX, tile.x, tile.y);
-                            break;
                     }
                     //         var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
                     //         let neighborDeltas;
@@ -113,22 +110,49 @@ export class Game extends Scene {
             }
         }
         const layer2 = map.createBlankLayer('layer2', tileset!);
-        layer2!.randomize(0, 0, map.width, map.height, [8]).setScale(1.7, 2.5);
+        layer2!.randomize(0, 0, map.width, map.height, [BLANK]).setScale(1.7, 2.5);
 
-        this.input.on('pointerup', (pointer: any) => {
-            var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
-            if (!tile) return;
-            var layer1Tile = layer1!.getTileAtWorldXY(pointer.worldX, pointer.worldY)
-            map.removeTile(tile)
-            console.log(pointer.worldX, pointer.worldY, tile);
-            if (layer1Tile.index === BOMB){
-                //defeat
-                this.scene.start("GameOver")
-
+        this.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+            switch (pointer.button) {
+                case 0: // left click
+                    let tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
+                    if (!tile) return;
+                    var layer1Tile = layer1!.getTileAtWorldXY(pointer.worldX, pointer.worldY)
+                    if(tile.index === BLANK){
+                    map.removeTile(tile)
+                    }
+                    console.log(pointer.worldX, pointer.worldY, tile);
+                    if (layer1Tile.index === BOMB) {
+                        //defeat
+                        this.scene.start("GameOver")
+                    }
+                    break;
+                case 1: // middle click
+                    let layer2Tile = layer2!.getTileAtWorldXY(pointer.worldX, pointer.worldY);
+                    if (!layer2Tile) return;
+                    layer2!.putTileAt(layer2Tile.index === FLAG ? BLANK : FLAG, layer2Tile.x, layer2Tile.y);
+                    break;
+                case 2: // right click
+                    break;
             }
+            // let placeFlag = layer2?.getTileAt(x,y);
+            console.log(pointer.button)
+            if(layer2?.findTile(tile=>tile.index=== BLANK)===null){
+                //victory
+                console.log("You won!");
+            }
+
+
 
         }
             , this);
+        // this.input.on('pointerup', (pointer: any) =>{
+        //     var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
+        //     if (!tile) return;
+        //     var layer2Tile = layer1!.getTileAtWorldXY(pointer.worldX, pointer.worldY)
+        //     layer2!.putTileAt(FLAG, tile.worldX, tile.worldY);
+
+        // }
         // for(x-range;x+range;x++); for(y-range;y+range;y++);
 
         // layer

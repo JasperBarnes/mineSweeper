@@ -10,16 +10,21 @@ export class GameOver extends Scene
     {
         super('GameOver');
     }
+    preload() {
+
+        this.load.image('explosion', 'assets/explosion.png')
+
+    }
 
     create ()
     {
         this.camera = this.cameras.main
-        this.camera.setBackgroundColor(0xff0000);
+        this.camera.setBackgroundColor(0xFF0000);
 
-        this.background = this.add.image(512, 384, 'background');
+        this.background = this.add.image(400, 300, 'explosion').setScale(0.5);
         this.background.setAlpha(0.5);
-
-        this.gameover_text = this.add.text(512, 384, 'Game Over', {
+        // this.add.image(explosion)
+        this.gameover_text = this.add.text(400, 150, 'Game Over', {
             fontFamily: 'Arial Black', fontSize: 64, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
