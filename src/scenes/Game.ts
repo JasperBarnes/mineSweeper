@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-
+// const GRASS = 1;
 const BOMB = 6;
 const ONE = 7;
 const TWO = 2;
@@ -44,7 +44,7 @@ export class Game extends Scene {
         // map.createLayer('Calque 1', tileset!);
 
         const layer1 = map.createBlankLayer('layer1', tileset!);
-        layer1!.randomize(0, 0, map.width, map.height, [1, 1, 1, 1, 1, BOMB]).setScale(1.7, 2.5);
+        layer1!.randomize(0, 0, map.width, map.height, [1, 1, 1, 1, 1,BOMB]).setScale(1.7, 2.5);
         for (let x = 0; x < map.width; x++) {
             for (let y = 0; y < map.height; y++) {
 
@@ -133,12 +133,14 @@ export class Game extends Scene {
                     layer2!.putTileAt(layer2Tile.index === FLAG ? BLANK : FLAG, layer2Tile.x, layer2Tile.y);
                     break;
                 case 2: // right click
+                
                     break;
             }
             // let placeFlag = layer2?.getTileAt(x,y);
             console.log(pointer.button)
             if(layer2?.findTile(tile=>tile.index=== BLANK)===null){
                 //victory
+                this.scene.start("MainMenu")
                 console.log("You won!");
             }
 
