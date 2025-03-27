@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-// const GRASS = 1;
+const GRASS = 1;
 const BOMB = 6;
 const ONE = 7;
 const TWO = 2;
@@ -44,7 +44,7 @@ export class Game extends Scene {
         // map.createLayer('Calque 1', tileset!);
 
         const layer1 = map.createBlankLayer('layer1', tileset!);
-        layer1!.randomize(0, 0, map.width, map.height, [1, 1, 1, 1, 1,BOMB]).setScale(1.7, 2.5);
+        layer1!.randomize(0, 0, map.width, map.height, [1, 1, 1, 1, 1, BOMB]).setScale(1.7, 2.5);
         for (let x = 0; x < map.width; x++) {
             for (let y = 0; y < map.height; y++) {
 
@@ -118,14 +118,26 @@ export class Game extends Scene {
                     let tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
                     if (!tile) return;
                     var layer1Tile = layer1!.getTileAtWorldXY(pointer.worldX, pointer.worldY)
-                    if(tile.index === BLANK){
-                    map.removeTile(tile)
+                    if (tile.index === BLANK) {
+                        map.removeTile(tile)
                     }
                     console.log(pointer.worldX, pointer.worldY, tile);
-                    if (layer1Tile.index === BOMB) {
-                        //defeat
-                        this.scene.start("GameOver")
+                    if (tile.index === FLAG) {
+
+
                     }
+                    else {
+                        if (layer1Tile.index === BOMB) {
+                            //defeat
+                            this.scene.start("GameOver")
+                        }
+                    }
+                    // if (layer1Tile.index === BOMB) {
+                    //     //defeat
+                    //     this.scene.start("GameOver")
+                    // }
+                    // if(layer1Tile.index === GRASS){
+                    // }
                     break;
                 case 1: // middle click
                     let layer2Tile = layer2!.getTileAtWorldXY(pointer.worldX, pointer.worldY);
@@ -133,15 +145,18 @@ export class Game extends Scene {
                     layer2!.putTileAt(layer2Tile.index === FLAG ? BLANK : FLAG, layer2Tile.x, layer2Tile.y);
                     break;
                 case 2: // right click
-                
-                    break;
+                // let layer2Tile = layer2!.getTileAtWorldXY(pointer.worldX, pointer.worldY);
+                // if (!layer2Tile) return;
+                // layer2!.putTileAt(layer2Tile.index === FLAG ? BLANK : FLAG, layer2Tile.x, layer2Tile.y);
+                //     break;
             }
             // let placeFlag = layer2?.getTileAt(x,y);
             console.log(pointer.button)
-            if(layer2?.findTile(tile=>tile.index=== BLANK)===null){
+            if (layer2?.findTile(tile => tile.index === BLANK) === null) {
                 //victory
-                this.scene.start("MainMenu")
+                this.scene.start("WinScene");
                 console.log("You won!");
+                // let  this.title = gameStartText
             }
 
 

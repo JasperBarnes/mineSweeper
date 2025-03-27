@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
 
-export class GameOver extends Scene
+export class WinScene extends Scene
 {
     camera: Phaser.Cameras.Scene2D.Camera;
     background: Phaser.GameObjects.Image;
@@ -8,11 +8,10 @@ export class GameOver extends Scene
 
     constructor ()
     {
-        super('GameOver');
+        super('WinScene');
     }
     preload() {
 
-        this.load.image('explosion', 'assets/explosion.png')
 
     }
 
