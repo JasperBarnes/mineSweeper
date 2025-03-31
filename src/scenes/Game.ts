@@ -53,10 +53,9 @@ export class Game extends Scene {
                 // If the tile is a bomb, continue
                 // If not, count up the number of neighbors who are bombs
                 // and set the tile to that tile (layer1.setTileAt())
-                if (tile.index === BOMB) continue;
-
-
-                else {
+                if (tile.index === BOMB) {
+                    continue;
+                } else {
                     let bombCount = 0;
                     let neighborDeltas;
                     if (tile.y % 2 == 0) {
@@ -90,23 +89,12 @@ export class Game extends Scene {
                             layer1!.putTileAt(FIVE, tile.x, tile.y);
                             break;
                     }
-                    //         var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
-                    //         let neighborDeltas;
-                    // if (tile.y % 2 == 0) {
-                    //     neighborDeltas = [[-1, 0], [-1, -1], [0, -1], [1, 0], [0, 1], [-1, 1]];
-                    // }
-                    // else {
-                    //     neighborDeltas = [[-1, 0], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1]];
-                    // }
-                    // for (let [dx, dy] of neighborDeltas) {
-                    //     let neighborX = tile.x + dx;
-                    //     let neighborY = tile.y + dy;
-
+                    
+                    // let flagAmount = 0
+                    // flagAmount=flagAmount+1
+                    // console.log(flagAmount)
+                    
                 }
-                // if(tile.index == BOMB)){
-                // tile.index == BOMB}
-                //  if the tile is a bomb (), continue
-                //  else, add up it's neighbors who are bombs
             }
         }
         const layer2 = map.createBlankLayer('layer2', tileset!);
@@ -117,27 +105,37 @@ export class Game extends Scene {
                 case 0: // left click
                     let tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
                     if (!tile) return;
-                    var layer1Tile = layer1!.getTileAtWorldXY(pointer.worldX, pointer.worldY)
-                    if (tile.index === BLANK) {
-                        map.removeTile(tile)
-                    }
-                    console.log(pointer.worldX, pointer.worldY, tile);
-                    if (tile.index === FLAG) {
-
-
-                    }
-                    else {
-                        if (layer1Tile.index === BOMB) {
-                            //defeat
-                            this.scene.start("GameOver")
+                    let removeTile = (tile: Phaser.Tilemaps.Tile, isClicked: boolean) => {
+                        let layer1Tile = layer1!.getTileAt(tile.x, tile.y)
+                        if (tile.index === BLANK) {
+                            map.removeTile(tile)
+                            if(layer1Tile.index === GRASS){
+                                let neighborDeltas;
+                                if (tile.y % 2 == 0) {
+                                    neighborDeltas = [[-1, 0], [-1, -1], [0, -1], [1, 0], [0, 1], [-1, 1]];
+                                }
+                                else {
+                                    neighborDeltas = [[-1, 0], [0, -1], [1, -1], [1, 0], [1, 1], [0, 1]];
+                                }
+                                for (let [dx, dy] of neighborDeltas) {
+                                    let neighborX = tile.x + dx;
+                                    let neighborY = tile.y + dy;
+                                    let neighbor = map.getTileAt(neighborX, neighborY);
+                                    if (!neighbor) continue;
+                                    removeTile(neighbor, false)
+                                }
+                            }
+                        }
+                        if (tile.index !== FLAG) {
+                            if (layer1Tile.index === BOMB) {
+                                //defeat
+                                if (isClicked){
+                                    this.scene.start("GameOver");
+                                }
+                            }
                         }
                     }
-                    // if (layer1Tile.index === BOMB) {
-                    //     //defeat
-                    //     this.scene.start("GameOver")
-                    // }
-                    // if(layer1Tile.index === GRASS){
-                    // }
+                    removeTile(tile, true)
                     break;
                 case 1: // middle click
                     let layer2Tile = layer2!.getTileAtWorldXY(pointer.worldX, pointer.worldY);
@@ -148,21 +146,30 @@ export class Game extends Scene {
                 // let layer2Tile = layer2!.getTileAtWorldXY(pointer.worldX, pointer.worldY);
                 // if (!layer2Tile) return;
                 // layer2!.putTileAt(layer2Tile.index === FLAG ? BLANK : FLAG, layer2Tile.x, layer2Tile.y);
-                //     break;
+                    break;
             }
             // let placeFlag = layer2?.getTileAt(x,y);
             console.log(pointer.button)
+            if (layer1?.findTile(tile => tile.index === BOMB)){
+                for (let x = 0; x < map.width; x++) {
+                    for (let y = 0; y < map.height; y++) {
+                    }
+                        
+                
+
+            }
+           
+
+            // }
             if (layer2?.findTile(tile => tile.index === BLANK) === null) {
-                //victory
                 this.scene.start("WinScene");
                 console.log("You won!");
-                // let  this.title = gameStartText
             }
 
 
 
         }
-            , this);
+             this;
         // this.input.on('pointerup', (pointer: any) =>{
         //     var tile = map.getTileAtWorldXY(pointer.worldX, pointer.worldY);
         //     if (!tile) return;
@@ -229,9 +236,10 @@ export class Game extends Scene {
         //             repeat: -1
         //         });
 
-    }
+    })
 
-    update() {
+    update();
+     {
         //         if (this.cursors.left.isDown) {
         //             this.player.setVelocityX(-160);
         //             this.player.anims.play('left', true);
@@ -250,9 +258,4 @@ export class Game extends Scene {
         //         }
     }
 }
-
-
-// create a grid and place bobms and numbers on places 
-// after use the grass to cover the grid and numbers 
-// have on click move or delete grass
-//if a bomb is clicked then game over
+}
