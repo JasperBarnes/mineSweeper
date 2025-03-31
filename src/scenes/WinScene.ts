@@ -18,12 +18,12 @@ export class WinScene extends Scene
     create ()
     {
         this.camera = this.cameras.main
-        this.camera.setBackgroundColor(0xFF0000);
+        this.camera.setBackgroundColor(0x008000);
 
-        this.background = this.add.image(400, 300, 'explosion').setScale(0.5);
-        this.background.setAlpha(0.5);
+        // this.background = this.add.image(400, 300, 'explosion').setScale(0.5);
+      
         // this.add.image(explosion)
-        this.gameover_text = this.add.text(400, 150, 'L Bozo', {
+        this.gameover_text = this.add.text(400, 150, 'Victory', {
             fontFamily: 'Arial Black', fontSize: 64, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
